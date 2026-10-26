@@ -1,0 +1,43 @@
+// ---------------------------------------------------------------------------
+// alu.hdl -- a 4-bit ALU.
+// Demonstrates: constants, buses, 'when/else' chains (lowered to MUX trees),
+// operator lowering (+ and - become ripple-carry structures), bit slicing,
+// and reduction logic.
+// ---------------------------------------------------------------------------
+
+const WIDTH = 4;
+
+const OP_ADD = 0;
+const OP_SUB = 1;
+const OP_AND = 2;
+const OP_XOR = 3;
+
+module ALU4(input  bus[WIDTH] a,
+            input  bus[WIDTH] b,
+            input  bus[2] op,
+            output bus[WIDTH] y,
+            output zero,
+            output eq) {
+
+    wire bus[WIDTH] result;
+    result = 4'b0000;
+
+    when (op == OP_ADD) {
+        result = a + b;
+    } else when (op == OP_SUB) {
+        result = a - b;
+    } else when (op == OP_AND) {
+        result = a & b;
+    } else {
+        result = a ^ b;
+    }
+
+    y = result;
+
+    // Zero flag: NOR of every result bit.  The technology mapper folds
+    // NOT(OR(..)) into a single NOR cell.
+    zero = ~(result[0] | result[1] | result[2] | result[3]);
+
+    // Equality comparator, lowered to an XNOR tree by the IR generator.
+    eq = a == b;
+}

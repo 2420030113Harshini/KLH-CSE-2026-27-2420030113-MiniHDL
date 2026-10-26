@@ -1,0 +1,29 @@
+// ---------------------------------------------------------------------------
+// errors.hdl -- every mistake here is intentional.
+// Run it to see the diagnostic engine, panic-mode recovery, and the fact that
+// the compiler reports many problems in a single pass instead of just the
+// first one:
+//
+//     mhdlc examples/errors.hdl
+// ---------------------------------------------------------------------------
+
+module Broken(input a, input bus[4] b, output y, output q) {
+
+    wire t1 = a & undefined_signal;   // undeclared identifier
+    wire t1 = a | b[0];               // duplicate declaration
+    wire t2 = b[9];                   // bit index out of range
+    wire t3 = b[1:3];                 // reversed slice bounds
+
+    a = t1;                           // assignment to an input port
+
+    y = t2 ^ t3 @ t1;                 // illegal character; parser recovers
+
+    wire t4 = b + 1;                  // 4-bit result into an implicit 1-bit
+    y = t4;                           // wire: width warning, not an error
+
+    Missing u0(a, y);                 // unknown module
+}
+
+module Cyclic(input a, output y) {
+    Cyclic u1(a, y);                  // recursive instantiation
+}

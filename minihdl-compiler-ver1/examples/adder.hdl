@@ -1,0 +1,36 @@
+// ---------------------------------------------------------------------------
+// adder.hdl -- hierarchy demo: HalfAdder -> FullAdder -> RippleCarry4
+// Shows module instantiation (which the compiler inlines / flattens),
+// intermediate wires, and common-subexpression opportunities.
+// ---------------------------------------------------------------------------
+
+module HalfAdder(input a, input b, output sum, output carry) {
+    sum   = a ^ b;
+    carry = a & b;
+}
+
+module FullAdder(input a, input b, input cin,
+                 output sum, output cout) {
+    wire s1;
+    wire c1;
+    wire c2;
+
+    HalfAdder h0(a, b, s1, c1);
+    HalfAdder h1(s1, cin, sum, c2);
+
+    cout = c1 | c2;
+}
+
+/* A 4-bit ripple-carry adder built from four FullAdders.
+   Note how the compiler flattens the whole hierarchy into one gate netlist. */
+module RippleCarry4(input bus[4] a, input bus[4] b, input cin,
+                    output bus[4] sum, output cout) {
+    wire c0;
+    wire c1;
+    wire c2;
+
+    FullAdder fa0(a[0], b[0], cin, sum[0], c0);
+    FullAdder fa1(a[1], b[1], c0,  sum[1], c1);
+    FullAdder fa2(a[2], b[2], c1,  sum[2], c2);
+    FullAdder fa3(a[3], b[3], c2,  sum[3], cout);
+}

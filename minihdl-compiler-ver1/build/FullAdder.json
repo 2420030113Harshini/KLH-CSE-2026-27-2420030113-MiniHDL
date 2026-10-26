@@ -1,0 +1,108 @@
+{
+  "module": "FullAdder",
+  "inputs": [
+    {
+      "name": "a",
+      "bits": [
+        2
+      ]
+    },
+    {
+      "name": "b",
+      "bits": [
+        3
+      ]
+    },
+    {
+      "name": "cin",
+      "bits": [
+        4
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sum",
+      "bits": [
+        7
+      ]
+    },
+    {
+      "name": "cout",
+      "bits": [
+        9
+      ]
+    }
+  ],
+  "gates": [
+    {
+      "op": "XOR",
+      "in": [
+        2,
+        3
+      ],
+      "out": 5,
+      "src": "line 8"
+    },
+    {
+      "op": "AND",
+      "in": [
+        2,
+        3
+      ],
+      "out": 6,
+      "src": "line 9"
+    },
+    {
+      "op": "XOR",
+      "in": [
+        5,
+        4
+      ],
+      "out": 7,
+      "src": "line 8"
+    },
+    {
+      "op": "AND",
+      "in": [
+        5,
+        4
+      ],
+      "out": 8,
+      "src": "line 9"
+    },
+    {
+      "op": "OR",
+      "in": [
+        6,
+        8
+      ],
+      "out": 9,
+      "src": "line 21"
+    }
+  ],
+  "cells": {
+    "AND": 2.0,
+    "BUF": 0.5,
+    "MUX": 3.5,
+    "NAND": 1.5,
+    "NOR": 1.5,
+    "NOT": 1.0,
+    "OR": 2.0,
+    "XNOR": 3.0,
+    "XOR": 3.0
+  },
+  "stats": {
+    "gates": 5,
+    "by_op": {
+      "AND": 2,
+      "OR": 1,
+      "XOR": 2
+    },
+    "nets": 10,
+    "inputs": 3,
+    "outputs": 2,
+    "area_ge": 12.0,
+    "depth": 4
+  }
+}

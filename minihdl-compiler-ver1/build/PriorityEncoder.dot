@@ -1,0 +1,54 @@
+digraph PriorityEncoder {
+  rankdir=LR;
+  node [fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=8, color="#555555"];
+  { rank=source;
+    n2 [label="req[0]", shape=invhouse, style=filled, fillcolor="#cde7c8"];
+    n3 [label="req[1]", shape=invhouse, style=filled, fillcolor="#cde7c8"];
+    n4 [label="req[2]", shape=invhouse, style=filled, fillcolor="#cde7c8"];
+    n5 [label="req[3]", shape=invhouse, style=filled, fillcolor="#cde7c8"];
+  }
+  n0 [label="0", shape=circle, style=filled, fillcolor="#eeeeee"];
+  n1 [label="1", shape=circle, style=filled, fillcolor="#eeeeee"];
+  g0 [label="OR", shape=box, style="rounded,filled", fillcolor="#bbdefb"];
+  n2 -> g0 [label="a"];
+  n3 -> g0 [label="b"];
+  g0 -> n6;
+  g1 [label="OR", shape=box, style="rounded,filled", fillcolor="#bbdefb"];
+  n6 -> g1 [label="a"];
+  n4 -> g1 [label="b"];
+  g1 -> n7;
+  g2 [label="OR", shape=box, style="rounded,filled", fillcolor="#bbdefb"];
+  n7 -> g2 [label="a"];
+  n5 -> g2 [label="b"];
+  g2 -> n8;
+  g3 [label="MUX", shape=box, style="rounded,filled", fillcolor="#ffe0b2"];
+  n4 -> g3 [label="sel"];
+  n0 -> g3 [label="1"];
+  n3 -> g3 [label="0"];
+  g3 -> n10;
+  g4 [label="MUX", shape=box, style="rounded,filled", fillcolor="#ffe0b2"];
+  n5 -> g4 [label="sel"];
+  n1 -> g4 [label="1"];
+  n10 -> g4 [label="0"];
+  g4 -> n12;
+  g5 [label="MUX", shape=box, style="rounded,filled", fillcolor="#ffe0b2"];
+  n5 -> g5 [label="sel"];
+  n1 -> g5 [label="1"];
+  n4 -> g5 [label="0"];
+  g5 -> n13;
+  { rank=sink;
+    out_code_0 [label="code[0]", shape=house, style=filled, fillcolor="#f8c9c9"];
+    out_code_1 [label="code[1]", shape=house, style=filled, fillcolor="#f8c9c9"];
+    out_valid_0 [label="valid", shape=house, style=filled, fillcolor="#f8c9c9"];
+  }
+  n12 -> out_code_0;
+  n13 -> out_code_1;
+  n8 -> out_valid_0;
+  n6 [label="", shape=point, width=0.06];
+  n7 [label="", shape=point, width=0.06];
+  n8 [label="", shape=point, width=0.06];
+  n10 [label="", shape=point, width=0.06];
+  n12 [label="", shape=point, width=0.06];
+  n13 [label="", shape=point, width=0.06];
+}

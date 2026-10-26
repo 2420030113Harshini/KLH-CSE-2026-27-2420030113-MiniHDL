@@ -1,0 +1,47 @@
+// ---------------------------------------------------------------------------
+// datapath.hdl -- selection and encoding blocks.
+// Demonstrates: the '?:' select operator, concatenation '{...}' (MSB first),
+// constant shifts (pure rewiring, zero gates), bit indexing and nested 'when'.
+// ---------------------------------------------------------------------------
+
+module Mux4(input bus[4] d, input bus[2] s, output y) {
+    // Nested selects build a balanced MUX tree.
+    y = s[1] ? (s[0] ? d[3] : d[2])
+             : (s[0] ? d[1] : d[0]);
+}
+
+module Decoder2to4(input bus[2] s, input en, output bus[4] y) {
+    wire n0 = ~s[0];
+    wire n1 = ~s[1];
+    y = {  en & s[1] & s[0],
+           en & s[1] & n0,
+           en & n1   & s[0],
+           en & n1   & n0 };
+}
+
+// 4-to-2 priority encoder: the highest set input wins.
+module PriorityEncoder(input bus[4] req, output bus[2] code, output valid) {
+    code  = 2'b00;
+    valid = req[0] | req[1] | req[2] | req[3];
+
+    when (req[1]) { code = 2'b01; }
+    when (req[2]) { code = 2'b10; }
+    when (req[3]) { code = 2'b11; }
+}
+
+// A small datapath: shift, mask and select, all in one module.
+module Datapath(input bus[8] data, input bus[2] mode, input bus[2] sel,
+                output bus[8] out, output bit picked) {
+    wire bus[8] shifted;
+    wire bus[8] masked;
+
+    shifted = data << 2;              // constant shift: no gates at all
+    masked  = data & 8'h0F;           // upper nibble folds away to zero
+
+    when (mode == 2'b00) { out = data; }
+    else when (mode == 2'b01) { out = shifted; }
+    else when (mode == 2'b10) { out = masked; }
+    else { out = {data[3:0], data[7:4]}; }   // nibble swap, also free
+
+    Mux4 m0(data[3:0], sel, picked);
+}

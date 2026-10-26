@@ -1,0 +1,28 @@
+// ---------------------------------------------------------------------------
+// optimize_demo.hdl -- deliberately wasteful logic.
+// Compile with  -O0  and then  -O2  and compare the gate counts.
+//
+//   mhdlc examples/optimize_demo.hdl --top Redundant -O0 --emit ir,stats
+//   mhdlc examples/optimize_demo.hdl --top Redundant -O2 --emit opt,stats
+// ---------------------------------------------------------------------------
+
+module Redundant(input a, input b, input c,
+                 output x, output y, output z, output w) {
+
+    wire t1 = (a & b) | (a & b);      // idempotence:      X | X      -> X
+    wire t2 = a & b;                  // CSE:              same as t1
+    wire t3 = a & 1'b1;               // identity:         X & 1      -> X
+    wire t4 = (a ^ a) | (b & 1'b0);   // annihilation:     X ^ X, X&0 -> 0
+    wire t5 = ~(~c);                  // involution:       ~~X        -> X
+    wire t6 = (a & ~a) | (b | ~b);    // complementation:  0 | 1      -> 1
+    wire t7 = c ? t3 : t3;            // useless mux:      s ? X : X  -> X
+
+    // `t8` is computed but never read: dead code elimination removes it
+    // and the compiler warns about it too.
+    wire t8 = (a ^ b) ^ (c ^ 1'b1);
+
+    x = t1 & t2;
+    y = t3 | t4;
+    z = t5 ^ t7;
+    w = t6 & (a | 1'b0);
+}

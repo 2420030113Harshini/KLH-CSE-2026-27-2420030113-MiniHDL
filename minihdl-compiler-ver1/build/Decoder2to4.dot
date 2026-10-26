@@ -1,0 +1,58 @@
+digraph Decoder2to4 {
+  rankdir=LR;
+  node [fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=8, color="#555555"];
+  { rank=source;
+    n2 [label="s[0]", shape=invhouse, style=filled, fillcolor="#cde7c8"];
+    n3 [label="s[1]", shape=invhouse, style=filled, fillcolor="#cde7c8"];
+    n4 [label="en", shape=invhouse, style=filled, fillcolor="#cde7c8"];
+  }
+  g0 [label="NOT", shape=box, style="rounded,filled", fillcolor="#ffcdd2"];
+  n2 -> g0 [label="a"];
+  g0 -> n5;
+  g1 [label="NOT", shape=box, style="rounded,filled", fillcolor="#ffcdd2"];
+  n3 -> g1 [label="a"];
+  g1 -> n6;
+  g2 [label="AND", shape=box, style="rounded,filled", fillcolor="#bbdefb"];
+  n4 -> g2 [label="a"];
+  n6 -> g2 [label="b"];
+  g2 -> n7;
+  g3 [label="AND", shape=box, style="rounded,filled", fillcolor="#bbdefb"];
+  n7 -> g3 [label="a"];
+  n5 -> g3 [label="b"];
+  g3 -> n8;
+  g4 [label="AND", shape=box, style="rounded,filled", fillcolor="#bbdefb"];
+  n7 -> g4 [label="a"];
+  n2 -> g4 [label="b"];
+  g4 -> n10;
+  g5 [label="AND", shape=box, style="rounded,filled", fillcolor="#bbdefb"];
+  n4 -> g5 [label="a"];
+  n3 -> g5 [label="b"];
+  g5 -> n11;
+  g6 [label="AND", shape=box, style="rounded,filled", fillcolor="#bbdefb"];
+  n11 -> g6 [label="a"];
+  n5 -> g6 [label="b"];
+  g6 -> n12;
+  g7 [label="AND", shape=box, style="rounded,filled", fillcolor="#bbdefb"];
+  n11 -> g7 [label="a"];
+  n2 -> g7 [label="b"];
+  g7 -> n14;
+  { rank=sink;
+    out_y_0 [label="y[0]", shape=house, style=filled, fillcolor="#f8c9c9"];
+    out_y_1 [label="y[1]", shape=house, style=filled, fillcolor="#f8c9c9"];
+    out_y_2 [label="y[2]", shape=house, style=filled, fillcolor="#f8c9c9"];
+    out_y_3 [label="y[3]", shape=house, style=filled, fillcolor="#f8c9c9"];
+  }
+  n8 -> out_y_0;
+  n10 -> out_y_1;
+  n12 -> out_y_2;
+  n14 -> out_y_3;
+  n5 [label="", shape=point, width=0.06];
+  n6 [label="", shape=point, width=0.06];
+  n7 [label="", shape=point, width=0.06];
+  n8 [label="", shape=point, width=0.06];
+  n10 [label="", shape=point, width=0.06];
+  n11 [label="", shape=point, width=0.06];
+  n12 [label="", shape=point, width=0.06];
+  n14 [label="", shape=point, width=0.06];
+}

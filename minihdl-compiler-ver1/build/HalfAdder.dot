@@ -1,0 +1,25 @@
+digraph HalfAdder {
+  rankdir=LR;
+  node [fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=8, color="#555555"];
+  { rank=source;
+    n2 [label="a", shape=invhouse, style=filled, fillcolor="#cde7c8"];
+    n3 [label="b", shape=invhouse, style=filled, fillcolor="#cde7c8"];
+  }
+  g0 [label="XOR", shape=box, style="rounded,filled", fillcolor="#d1c4e9"];
+  n2 -> g0 [label="a"];
+  n3 -> g0 [label="b"];
+  g0 -> n4;
+  g1 [label="AND", shape=box, style="rounded,filled", fillcolor="#bbdefb"];
+  n2 -> g1 [label="a"];
+  n3 -> g1 [label="b"];
+  g1 -> n5;
+  { rank=sink;
+    out_sum_0 [label="sum", shape=house, style=filled, fillcolor="#f8c9c9"];
+    out_carry_0 [label="carry", shape=house, style=filled, fillcolor="#f8c9c9"];
+  }
+  n4 -> out_sum_0;
+  n5 -> out_carry_0;
+  n4 [label="", shape=point, width=0.06];
+  n5 [label="", shape=point, width=0.06];
+}
